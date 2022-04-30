@@ -1,8 +1,10 @@
+import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
 import { httpStatusCode } from "../constant/httpStatusCode";
-
 import { HttpException } from "../utils/HttpException";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const secret = process.env.JWT_SECRET;
 

@@ -1,10 +1,13 @@
+import dotenv from "dotenv";
 import { app } from "./app";
 import { db } from "./database/db";
 
-const PORT = process.env.PORT || 3001;
+dotenv.config();
+
+const PORT = process.env.PORT;
 
 const server = app.listen(PORT, async () => {
-  await db.sync();
+  await db.sync({ force: true });
   console.log(`Listen on ${PORT}`);
 });
 
