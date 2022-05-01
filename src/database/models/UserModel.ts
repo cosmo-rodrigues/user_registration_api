@@ -19,6 +19,14 @@ export const UserModel = db.define(
       allowNull: false,
       unique: true,
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     cpf: {
       // @ts-ignore
       type: DataTypes.BIGINT(11),
@@ -30,6 +38,10 @@ export const UserModel = db.define(
       type: DataTypes.BIGINT(11),
       allowNull: false,
       unique: true,
+    },
+    addressId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
   },
   {

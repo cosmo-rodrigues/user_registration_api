@@ -7,7 +7,7 @@ dotenv.config();
 const PORT = process.env.PORT;
 
 const server = app.listen(PORT, async () => {
-  await db.sync({ force: true });
+  await db.sync();
   console.log(`Listen on ${PORT}`);
 });
 

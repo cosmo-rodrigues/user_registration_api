@@ -7,6 +7,7 @@ const secret = process.env.JWT_SECRET;
 
 interface IPayload {
   email: string;
+  id: number;
 }
 
 export const tokenGenerate = (payload: IPayload) => {

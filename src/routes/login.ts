@@ -1,7 +1,6 @@
-import * as express from "express";
+import express from "express";
+import * as loginController from "../controller/login";
 
 export const login = express.Router();
 
-login.post("/", async () => {
-  console.log("Usuário logado");
-});
+login.post("/auth", loginController.authorization);

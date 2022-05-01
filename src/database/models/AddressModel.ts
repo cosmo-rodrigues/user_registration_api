@@ -25,7 +25,7 @@ export const AddressModel = db.define(
     },
     zipCode: {
       // @ts-ignore
-      type: DataTypes.BIGINT(8),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     street: {
@@ -33,7 +33,7 @@ export const AddressModel = db.define(
       allowNull: false,
     },
     number: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     complement: {
@@ -47,9 +47,9 @@ export const AddressModel = db.define(
 
 UserModel.belongsTo(AddressModel, {
   constraints: true,
-  foreignKey: "idAddress",
+  foreignKey: "addressId",
 });
 
 AddressModel.hasMany(UserModel, {
-  foreignKey: "idAddress",
+  foreignKey: "addressId",
 });
