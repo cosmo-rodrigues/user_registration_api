@@ -98,4 +98,5 @@ export const getUserById = async (id: number) => {
 export const deleteUser = async (id: number) => {
   // @ts-ignore
   await UserModel.destroy({ where: { id } });
+  await AddressModel.destroy({ where: { id } });
 };

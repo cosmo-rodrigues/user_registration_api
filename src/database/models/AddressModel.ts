@@ -48,6 +48,8 @@ export const AddressModel = db.define(
 UserModel.belongsTo(AddressModel, {
   constraints: true,
   foreignKey: "addressId",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
 });
 
 AddressModel.hasMany(UserModel, {

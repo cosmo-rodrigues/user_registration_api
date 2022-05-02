@@ -2,7 +2,7 @@ import { httpStatusCode } from "../constant/httpStatusCode";
 import { UserModel } from "../database/models/UserModel";
 import { HttpException } from "../utils/HttpException";
 
-export async function emailValidation(email: string) {
+export async function loginValidation(email: string) {
   if (!email || typeof email !== "string")
     throw new HttpException(
       httpStatusCode.UNPROCESSABLE_ENTITY,
