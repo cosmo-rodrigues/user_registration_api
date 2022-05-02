@@ -13,9 +13,9 @@ export const create = async (
     const token = await userService.createUser(
       name,
       email,
+      password,
       cpf,
       pis,
-      password,
       address
     );
     response.json({ token }).sendStatus(httpStatusCode.CREATED);

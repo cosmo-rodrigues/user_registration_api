@@ -17,7 +17,7 @@ const emailIsValid = (email: string) => {
 
 export function userValidations(userInfos: IUserInfos) {
   const { name, email, password, cpf, pis } = userInfos;
-  if (!name || typeof name !== "string" || name.length > 3) {
+  if (!name || typeof name !== "string" || name.length < 3) {
     throw new HttpException(
       httpStatusCode.UNPROCESSABLE_ENTITY,
       "Por favor, digite um nome válido com pelo menos 3 letras!"
@@ -31,15 +31,24 @@ export function userValidations(userInfos: IUserInfos) {
     );
   }
 
-  if (!password || typeof password !== "string") {
-    throw new HttpException(httpStatusCode.UNPROCESSABLE_ENTITY, "");
+  if (!password || typeof password !== "string" || password.length < 8) {
+    throw new HttpException(
+      httpStatusCode.UNPROCESSABLE_ENTITY,
+      "Sua senha deve conter pelo menos 8 caracteres!"
+    );
   }
 
-  if (!cpf || typeof cpf !== "number") {
-    throw new HttpException(httpStatusCode.UNPROCESSABLE_ENTITY, "");
+  if (!cpf || typeof cpf !== "number" || `${cpf}`.length < 11) {
+    throw new HttpException(
+      httpStatusCode.UNPROCESSABLE_ENTITY,
+      "Por favor, informe um CPF válido!"
+    );
   }
 
-  if (!pis || typeof pis !== "number") {
-    throw new HttpException(httpStatusCode.UNPROCESSABLE_ENTITY, "");
+  if (!pis || typeof pis !== "number" || `${pis}`.length < 11) {
+    throw new HttpException(
+      httpStatusCode.UNPROCESSABLE_ENTITY,
+      "Por favor, informe um PIS válido!"
+    );
   }
 }

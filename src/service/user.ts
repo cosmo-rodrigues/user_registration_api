@@ -4,6 +4,8 @@ import { UserModel } from "../database/models/UserModel";
 import { HttpException } from "../utils/HttpException";
 import { tokenGenerate } from "../auth/tokenGenerator";
 import { AddressModel } from "../database/models/AddressModel";
+import { addressFieldsValidate } from "../validation/adress";
+import { userValidations } from "../validation/user";
 
 interface IAdress {
   country: string;
@@ -18,15 +20,27 @@ interface IAdress {
 export const createUser = async (
   name: string,
   email: string,
+  password: string,
   cpf: number,
   pis: number,
-  password: string,
   address: IAdress
 ) => {
-  const alreadyRegisteredUser = await UserModel.findOne({ where: { email } });
+  const emailAlreadyRegistered = await UserModel.findOne({ where: { email } });
 
-  if (alreadyRegisteredUser) {
+  if (emailAlreadyRegistered) {
     throw new HttpException(httpStatusCode.CONFLICT, "Email já cadastrado!");
+  }
+
+  const cpfAlreadyRegistered = await UserModel.findOne({ where: { cpf } });
+
+  if (cpfAlreadyRegistered) {
+    throw new HttpException(httpStatusCode.CONFLICT, "CPF já cadastrado!");
+  }
+
+  const pisAlreadyRegistered = await UserModel.findOne({ where: { pis } });
+
+  if (pisAlreadyRegistered) {
+    throw new HttpException(httpStatusCode.CONFLICT, "PIS já cadastrado!");
   }
 
   const { country, state, county, zipCode, street, number, complement } =
@@ -39,6 +53,15 @@ export const createUser = async (
 
     return userRole;
   }
+
+  userValidations({
+    name,
+    email,
+    password,
+    cpf,
+    pis,
+  });
+  addressFieldsValidate(address);
 
   // @ts-ignore
   const { id: addressId } = await AddressModel.create({
@@ -85,6 +108,7 @@ export const getAll = async (page: number, size: number) => {
 export const getUserById = async (id: number) => {
   const user = await UserModel.findOne({
     where: { id },
+    include: [{ model: AddressModel, as: "address" }],
     attributes: { exclude: ["password"] },
   });
   if (!user)
@@ -97,6 +121,8 @@ export const getUserById = async (id: number) => {
 
 export const deleteUser = async (id: number) => {
   // @ts-ignore
+  await getUserById(id);
+
   await UserModel.destroy({ where: { id } });
   await AddressModel.destroy({ where: { id } });
 };
