@@ -30,12 +30,13 @@ export const tokenValidator = async (
         "Você não está logado!"
       );
 
-    const decoded = jwt.verify(token, secret, (error) => {
+    const decoded = jwt.verify(token, secret, (error, decoded) => {
       if (error)
         throw new HttpException(
           httpStatusCode.UNAUTHORIZED,
           "Token expirado ou inválido!"
         );
+      return decoded;
     });
 
     request.user = decoded;

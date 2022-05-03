@@ -10,10 +10,10 @@ import swaggerDocs from "../swagger.json";
 
 export const app = express();
 
-app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 app.use(cors());
 app.use(json());
+
+app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(router);
 

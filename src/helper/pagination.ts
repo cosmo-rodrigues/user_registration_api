@@ -2,7 +2,7 @@ export function paginationFormat(currentPage, requestSize) {
   const pageAsNumber = Number.parseInt(currentPage);
   const sizeAsNumber = Number.parseInt(requestSize);
 
-  let page = 0;
+  let page = 1;
   if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
     page = pageAsNumber;
   }

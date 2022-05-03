@@ -4,7 +4,7 @@ import { UserModel } from "../database/models/UserModel";
 import { HttpException } from "../utils/HttpException";
 import { tokenGenerate } from "../auth/tokenGenerator";
 import { AddressModel } from "../database/models/AddressModel";
-import { addressFieldsValidate } from "../validation/adress";
+import { addressFieldsValidate } from "../validation/address";
 import { userValidations } from "../validation/user";
 
 interface IAdress {
@@ -102,6 +102,7 @@ export const getAll = async (page: number, size: number) => {
     include: [{ model: AddressModel, as: "address" }],
     attributes: { exclude: ["password"] },
   });
+
   return {
     content: users.rows,
     totalPages: Math.ceil(users.count / size),
