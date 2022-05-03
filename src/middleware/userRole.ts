@@ -1,13 +1,9 @@
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-
 import { NextFunction, Request, Response } from "express";
 import { httpStatusCode } from "../constant/httpStatusCode";
 import { HttpException } from "../utils/HttpException";
+import { UserModel } from "../database/models/UserModel";
 
-dotenv.config();
-
-const secret = process.env.JWT_SECRET;
 interface IUser {
   email: string;
   id: number;
@@ -16,29 +12,27 @@ interface IRequest extends Request {
   user: IUser;
 }
 
-export const tokenValidator = async (
+export const userRole = async (
   request: IRequest | jwt.JwtPayload,
   _response: Response,
   next: NextFunction
 ) => {
   try {
-    const token = request.headers.authorization;
-
-    if (!token)
+    const { email } = request.user;
+    const user = await UserModel.findOne({ where: { email } });
+    if (!user)
       throw new HttpException(
-        httpStatusCode.UNAUTHORIZED,
-        "Você não está logado!"
+        httpStatusCode.NOT_FOUND,
+        "Usuário não encontrado!"
       );
 
-    const decoded = jwt.verify(token, secret, (error) => {
-      if (error)
-        throw new HttpException(
-          httpStatusCode.UNAUTHORIZED,
-          "Token expirado ou inválido!"
-        );
-    });
-
-    request.user = decoded;
+    // @ts-ignore
+    if (user.role !== "admin") {
+      throw new HttpException(
+        httpStatusCode.UNAUTHORIZED,
+        "Você não tem permissão para acessar este serviço!"
+      );
+    }
   } catch (error) {
     next(error);
   }

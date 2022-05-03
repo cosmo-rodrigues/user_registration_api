@@ -15,7 +15,7 @@ const emailIsValid = (email: string) => {
   return emailIsValid;
 };
 
-export function userValidations(userInfos: IUserInfos) {
+export function userValidations(userInfos: IUserInfos, isCreating: boolean) {
   const { name, email, password, cpf, pis } = userInfos;
   if (!name || typeof name !== "string" || name.length < 3) {
     throw new HttpException(
@@ -31,7 +31,10 @@ export function userValidations(userInfos: IUserInfos) {
     );
   }
 
-  if (!password || typeof password !== "string" || password.length < 8) {
+  if (
+    (!password || typeof password !== "string" || password.length < 8) &&
+    isCreating
+  ) {
     throw new HttpException(
       httpStatusCode.UNPROCESSABLE_ENTITY,
       "Sua senha deve conter pelo menos 8 caracteres!"

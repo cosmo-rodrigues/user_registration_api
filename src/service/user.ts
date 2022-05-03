@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { httpStatusCode } from "../constant/httpStatusCode";
 import { UserModel } from "../database/models/UserModel";
 import { HttpException } from "../utils/HttpException";
@@ -54,13 +54,16 @@ export const createUser = async (
     return userRole;
   }
 
-  userValidations({
-    name,
-    email,
-    password,
-    cpf,
-    pis,
-  });
+  userValidations(
+    {
+      name,
+      email,
+      password,
+      cpf,
+      pis,
+    },
+    true
+  );
   addressFieldsValidate(address);
 
   // @ts-ignore
@@ -74,8 +77,8 @@ export const createUser = async (
     complement,
   });
 
-  const salt = await bcrypt.genSalt(12);
-  const passwordHash = await bcrypt.hash(password, salt);
+  const salt = bcryptjs.genSaltSync(8);
+  const passwordHash = bcryptjs.hashSync(password, salt);
 
   // @ts-ignore
   const { id } = await UserModel.create({
@@ -125,4 +128,42 @@ export const deleteUser = async (id: number) => {
 
   await UserModel.destroy({ where: { id } });
   await AddressModel.destroy({ where: { id } });
+};
+
+export const updateUser = async (
+  id: number,
+  name: string,
+  email: string,
+  password: string,
+  cpf: number,
+  pis: number,
+  address: IAdress
+) => {
+  const { country, state, county, zipCode, street, number, complement } =
+    address;
+
+  userValidations(
+    {
+      name,
+      email,
+      password,
+      cpf,
+      pis,
+    },
+    false
+  );
+  addressFieldsValidate(address);
+
+  const updatedUser = await UserModel.update(
+    { name, email, cpf, pis },
+    { where: { email } }
+  );
+  await AddressModel.update(
+    { country, state, county, zipCode, street, number, complement },
+    { where: { id } }
+  );
+
+  if (updatedUser) {
+    return `Dados do usuário atualizados com sucesso!`;
+  }
 };

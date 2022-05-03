@@ -1,8 +1,7 @@
-FROM node:17-alpine
+FROM node:16.15.0
 WORKDIR /usr/src/server
 COPY package.json .
-COPY yarn.lock .
-RUN yarn install --frozen-lockfile
+RUN yarn
 COPY . .
 # CMD ["yarn", "start"]
 EXPOSE 3001

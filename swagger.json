@@ -1,0 +1,286 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Para Cadastro de Usuários",
+    "description": "Esta API permite o cadastro e gerenciamento de usuários de sua aplicação",
+    "termsOfService": "https://tosdr.org/",
+    "contact": "cosmo.rsilva@gmail.com"
+  },
+  "version": "1.0.0",
+  "servers": [
+    {
+      "url": "http://localhost:3001/",
+      "description": "API de testes"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "summary": "Cadastro de usuários",
+        "description": "Rota para cadastro de usuários. Todos os campos são obrigatórios",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/User"
+              },
+              "exemples": {
+                "user": {
+                  "value": {
+                    "name": "Cosmo Rodrigues",
+                    "email": "cosmo.rsilva@gmail.com",
+                    "cpf": 99999999999,
+                    "pis": 88888889999,
+                    "password": "teste123",
+                    "role": "",
+                    "address": {
+                      "country": "Brail",
+                      "state": "Pará",
+                      "county": "São Simão",
+                      "zipCode": "75890-000",
+                      "street": "Minha Rua É Essa",
+                      "number": "SN",
+                      "complement": "Casa Grande"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "Email | CPF | PIS já cadastrado"
+          },
+          "422": {
+            "description": "Por favor, digite uma informação válida!"
+          },
+          "200": {
+            "description": "Token de autenticação"
+          }
+        }
+      },
+      "get": {
+        "summary": "Listagem de todos os usuários",
+        "description": "Os dados desta rota estão disponíveis somente para os administradores do sistema",
+        "tags": ["Users"],
+        "security": [{ "securitySchemes": [] }],
+        "responses": {
+          "401": {
+            "description": "Não autorizado"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Busca de usuário por ID",
+        "description": "Os dados desta rota estão disponíveis somente para o próprio usuário e os administradores do sistema",
+        "tags": ["Users"],
+        "security": [{ "securitySchemes": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID do usuário a ser requisitado",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Não autorizado"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Busca de usuário por ID",
+        "description": "Os dados desta rota estão disponíveis somente para o próprio usuário e os administradores do sistema",
+        "tags": ["Users"],
+        "security": [{ "securitySchemes": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID do usuário a ser requisitado",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/User"
+              },
+              "exemples": {
+                "user": {
+                  "value": {
+                    "name": "Cosmo Rodrigues",
+                    "email": "cosmo.rsilva@gmail.com",
+                    "cpf": 99999999999,
+                    "pis": 88888889999,
+                    "password": "teste123",
+                    "role": "",
+                    "address": {
+                      "country": "Brail",
+                      "state": "Pará",
+                      "county": "São Simão",
+                      "zipCode": "75890-000",
+                      "street": "Minha Rua É Essa",
+                      "number": "SN",
+                      "complement": "Casa Grande"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Não autorizado"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir o usuário pelo ID",
+        "description": "Somente o próprio usuário e os administradores do sistema podem realizar esta operação",
+        "tags": ["Users"],
+        "security": [{ "securitySchemes": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID do usuário a ser requisitado",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Não autorizado"
+          },
+          "200": {
+            "description": "Usuário apagado com sucesso"
+          }
+        }
+      }
+    },
+    "/login/auth": {
+      "post": {
+        "summary": "Login de usuário já cadastrado",
+        "description": "Rota para login de usuários já cadastrados",
+        "tags": ["Login"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "cpf": {
+            "type": "number"
+          },
+          "pis": {
+            "type": "number"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "county": {
+                "type": "string"
+              },
+              "zipCode": {
+                "type": "string"
+              },
+              "street": {
+                "type": "string"
+              },
+              "number": {
+                "type": "string"
+              },
+              "complement": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

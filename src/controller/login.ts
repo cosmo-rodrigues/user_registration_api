@@ -9,9 +9,11 @@ export const authorization = async (
 ) => {
   try {
     const { email, password } = request.body;
-    const login = loginServices.login(email, password);
-    response.json({ login }).sendStatus(httpStatusCode.OK);
+    const login = await loginServices.login(email, password);
+
+    response.json({ token: login }).sendStatus(httpStatusCode.OK);
   } catch (error) {
-    return next(error);
+    next(error);
   }
+  next();
 };

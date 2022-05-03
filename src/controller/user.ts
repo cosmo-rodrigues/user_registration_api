@@ -72,3 +72,26 @@ export const deleteUser = async (
     return next(error);
   }
 };
+
+export const updateUser = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = request.params.id;
+    const { name, email, cpf, pis, password, address } = request.body;
+    const updatedUser = await userService.updateUser(
+      +id,
+      name,
+      email,
+      password,
+      cpf,
+      pis,
+      address
+    );
+    response.json({ message: updatedUser }).sendStatus(httpStatusCode.CREATED);
+  } catch (error) {
+    return next(error);
+  }
+};
