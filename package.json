@@ -6,7 +6,7 @@
   "author": "Cosmo Rodrigues <cosmo.rsilva@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "mocha -r ts-node/register tests/**/*.test.ts --timeout 10000 --exit",
+    "test": "jest",
     "dev": "ts-node-dev ./src/server.ts",
     "build": "tsc",
     "start": "node ./dist/src/server.js"

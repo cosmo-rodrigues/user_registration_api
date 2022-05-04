@@ -1,8 +1,9 @@
 FROM node:16.15.0
 WORKDIR /usr/src/server
+COPY yarn.lock .
 COPY package.json .
-RUN yarn
+RUN yarn install --frozen-lockfile
 COPY . .
-# CMD ["yarn", "start"]
 EXPOSE 3001
-CMD ["yarn", "run", "dev"]
+CMD ["yarn", "run", "start"]
+# CMD ["yarn", "run", "dev"]
