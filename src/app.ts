@@ -29,7 +29,11 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://ezrecord.herokuapp.com"],
+    origin: [
+      "http://localhost:3000",
+      "https://ezrecord.herokuapp.com",
+      "http://ezrecord.herokuapp.com",
+    ],
     methods: "POST,GET,PUT,DELETE",
     credentials: true,
   })
