@@ -41,14 +41,14 @@ export function userValidations(userInfos: IUserInfos, isCreating: boolean) {
     );
   }
 
-  if (!cpf || typeof cpf !== "number" || `${cpf}`.length < 11) {
+  if (!cpf || typeof cpf !== "number" || `${cpf}`.length !== 11) {
     throw new HttpException(
       httpStatusCode.UNPROCESSABLE_ENTITY,
       "Por favor, informe um CPF válido!"
     );
   }
 
-  if (!pis || typeof pis !== "number" || `${pis}`.length < 11) {
+  if (!pis || typeof pis !== "number" || `${pis}`.length !== 11) {
     throw new HttpException(
       httpStatusCode.UNPROCESSABLE_ENTITY,
       "Por favor, informe um PIS válido!"

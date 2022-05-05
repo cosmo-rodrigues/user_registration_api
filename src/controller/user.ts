@@ -18,7 +18,8 @@ export const create = async (
       pis,
       address
     );
-    response.json({ token }).sendStatus(httpStatusCode.CREATED);
+
+    response.json({ ...token }).sendStatus(httpStatusCode.CREATED);
   } catch (error) {
     return next(error);
   }

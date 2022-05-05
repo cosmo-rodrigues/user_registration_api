@@ -42,10 +42,7 @@ socialAuth.get(
   })
 );
 
-socialAuth.get(
-  "/github",
-  passport.authenticate("github", { scope: ["profile"] })
-);
+socialAuth.get("/github", passport.authenticate("github", { scope: ["user"] }));
 
 socialAuth.get(
   "/github/callback",
