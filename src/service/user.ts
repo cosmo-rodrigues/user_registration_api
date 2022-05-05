@@ -91,8 +91,10 @@ export const createUser = async (
     addressId,
   });
 
+  const createdUser = await getUserById(id);
+
   const token = tokenGenerate({ email, id });
-  return token;
+  return { token, createdUser };
 };
 
 export const getAll = async (page: number, size: number) => {
