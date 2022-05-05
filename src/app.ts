@@ -1,5 +1,5 @@
 import "../passport";
-import express, { json, Request, Response } from "express";
+import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import logger from "morgan";
@@ -42,12 +42,6 @@ app.use(
 app.use(json());
 
 app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-app.get("/", (_request: Request, response: Response) => {
-  response.send(
-    "google-site-verification=ipogJwXtQYkNu_kPXUf1bSYwiuOyjgVKrUqOWzr6kc4"
-  );
-});
 
 app.use(router);
 
