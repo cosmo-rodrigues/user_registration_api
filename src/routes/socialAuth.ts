@@ -8,24 +8,21 @@ export const socialAuth = express.Router();
 
 socialAuth.get("/login/success", (request, response) => {
   if (request.user) {
-    response
-      .json({
-        success: true,
-        message: "successfully",
-        user: request.user,
-        //   cookies: request.cookies
-      })
-      .sendStatus(200);
+    response.status(200).json({
+      success: true,
+      message: "Login efetuado com sucesso!",
+      user: request.user,
+      //   cookies: request.cookies
+    });
   }
+  response.json({ message: "Usuário não encontrado!" }).sendStatus(404);
 });
 
-socialAuth.get("/login/failed", (request, response) => {
-  response
-    .json({
-      success: false,
-      message: "failure",
-    })
-    .sendStatus(401);
+socialAuth.get("/login/failed", (_request, response) => {
+  response.status(401).json({
+    success: false,
+    message: "Falha ao tentar logar!",
+  });
 });
 
 socialAuth.get("/logout", (request, response) => {
