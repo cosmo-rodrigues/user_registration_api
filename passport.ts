@@ -46,6 +46,12 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
+  // @ts-ignore
+  if (user._json.avatar_url) {
+    // @ts-ignore
+    const newUser = user._json;
+    return done(null, newUser);
+  }
   done(null, user);
 });
 
