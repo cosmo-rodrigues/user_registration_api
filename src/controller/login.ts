@@ -11,7 +11,7 @@ export const authorization = async (
     const { email, password } = request.body;
     const login = await loginServices.login(email, password);
 
-    response.json({ token: login }).sendStatus(httpStatusCode.OK);
+    response.json({ ...login }).sendStatus(httpStatusCode.OK);
   } catch (error) {
     next(error);
   }

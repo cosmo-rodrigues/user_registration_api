@@ -9,15 +9,8 @@ export const create = async (
   next: NextFunction
 ) => {
   try {
-    const { name, email, cpf, pis, password, address } = request.body;
-    const token = await userService.createUser(
-      name,
-      email,
-      password,
-      cpf,
-      pis,
-      address
-    );
+    const userInfo = request.body;
+    const token = await userService.createUser(userInfo);
 
     response.json({ ...token }).sendStatus(httpStatusCode.CREATED);
   } catch (error) {

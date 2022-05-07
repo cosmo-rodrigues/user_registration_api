@@ -7,7 +7,7 @@ import { AddressModel } from "../database/models/AddressModel";
 import { addressFieldsValidate } from "../validation/address";
 import { userValidations } from "../validation/user";
 
-interface IAdress {
+interface IAddress {
   country: string;
   state: string;
   county: string;
@@ -17,15 +17,25 @@ interface IAdress {
   complement: string;
 }
 
-export const createUser = async (
-  name: string,
-  email: string,
-  password: string,
-  cpf: number,
-  pis: number,
-  address: IAdress
-) => {
-  const emailAlreadyRegistered = await UserModel.findOne({ where: { email } });
+interface IUserInfo {
+  name: string;
+  email: string;
+  password: string;
+  cpf: number;
+  pis: number;
+  address: IAddress;
+}
+
+export const createUser = async (userInfo: IUserInfo) => {
+  userValidations(userInfo, true);
+  addressFieldsValidate(userInfo.address);
+  const { address, cpf, email, name, password, pis } = userInfo;
+  const { complement, country, county, number, state, street, zipCode } =
+    address;
+
+  const emailAlreadyRegistered = await UserModel.findOne({
+    where: { email },
+  });
 
   if (emailAlreadyRegistered) {
     throw new HttpException(httpStatusCode.CONFLICT, "Email já cadastrado!");
@@ -43,9 +53,6 @@ export const createUser = async (
     throw new HttpException(httpStatusCode.CONFLICT, "PIS já cadastrado!");
   }
 
-  const { country, state, county, zipCode, street, number, complement } =
-    address;
-
   function roleInjection() {
     const getRoleByEmailDomain = email.split("@")[1];
     const userRole =
@@ -53,18 +60,6 @@ export const createUser = async (
 
     return userRole;
   }
-
-  userValidations(
-    {
-      name,
-      email,
-      password,
-      cpf,
-      pis,
-    },
-    true
-  );
-  addressFieldsValidate(address);
 
   // @ts-ignore
   const { id: addressId } = await AddressModel.create({
@@ -140,7 +135,7 @@ export const updateUser = async (
   password: string,
   cpf: number,
   pis: number,
-  address: IAdress
+  address: IAddress
 ) => {
   const { country, state, county, zipCode, street, number, complement } =
     address;
