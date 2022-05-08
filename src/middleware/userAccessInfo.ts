@@ -26,7 +26,7 @@ export const userAccessInfo = async (
     if (!user)
       throw new HttpException(
         httpStatusCode.NOT_FOUND,
-        "Usuário não encontrado!"
+        "Você não tem permissão para acessar este serviço!"
       );
 
     // @ts-ignore

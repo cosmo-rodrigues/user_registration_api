@@ -94,10 +94,10 @@ export const createUser = async (userInfo: IUserInfo) => {
 
 export const getAll = async (page: number, size: number) => {
   const users = await UserModel.findAndCountAll({
-    limit: size,
-    offset: page,
-    include: [{ model: AddressModel, as: "address" }],
     attributes: { exclude: ["password"] },
+    include: [{ model: AddressModel, as: "address" }],
+    limit: size,
+    offset: page * size,
   });
 
   return {
@@ -129,7 +129,7 @@ export const deleteUser = async (id: number) => {
 };
 
 export const updateUser = async (
-  id: number,
+  id: string,
   name: string,
   email: string,
   password: string,

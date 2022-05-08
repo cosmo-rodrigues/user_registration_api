@@ -8,10 +8,39 @@ export const authorization = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password } = request.body;
+    const email = request.body.email;
+    const password = request.body.password;
+
     const login = await loginServices.login(email, password);
 
     response.json({ ...login }).sendStatus(httpStatusCode.OK);
+  } catch (error) {
+    next(error);
+  }
+  next();
+};
+
+export const docAuthorization = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  try {
+    const loginRef = request.query.ref;
+    const docNumber = request.params.docId;
+    const password = request.body.password;
+
+    if (loginRef === "cpf") {
+      const cpf = loginRef;
+      const login = await loginServices.loginWithCPF(cpf, password, docNumber);
+      response.json({ ...login }).sendStatus(httpStatusCode.OK);
+    }
+
+    if (loginRef === "pis") {
+      const pis = loginRef;
+      const login = await loginServices.loginWithPIS(pis, password, docNumber);
+      response.json({ ...login }).sendStatus(httpStatusCode.OK);
+    }
   } catch (error) {
     next(error);
   }

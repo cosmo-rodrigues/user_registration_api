@@ -76,7 +76,7 @@ export const updateUser = async (
     const id = request.params.id;
     const { name, email, cpf, pis, password, address } = request.body;
     const updatedUser = await userService.updateUser(
-      +id,
+      id,
       name,
       email,
       password,
