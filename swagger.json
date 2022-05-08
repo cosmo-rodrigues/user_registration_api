@@ -200,10 +200,34 @@
         }
       }
     },
-    "/login/auth": {
+    "/login": {
       "post": {
         "summary": "Login de usuário já cadastrado",
         "description": "Rota para login de usuários já cadastrados",
+        "tags": ["Login"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth": {
+      "get": {
+        "summary": "Login de usuário com OAuth2",
+        "description": "Rota para login de usuários utilizando redes sociais",
         "tags": ["Login"],
         "requestBody": {
           "content": {
